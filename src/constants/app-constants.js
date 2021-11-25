@@ -8,7 +8,7 @@ const validationError = 422;
 const serverErrorMessage = 'Internal Server Error. Please try again later.';
 const tokenExpire = '120 days';
 const tokenAlgo  = 'RS256';
-const tokenKey = "the-beautiful-growth";
+const tokenKey = "hands-electric-company";
 
 
 module.exports = {
