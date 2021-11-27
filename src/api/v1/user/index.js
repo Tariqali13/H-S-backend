@@ -7,9 +7,21 @@ const jwtValidations = require(appRoot + '/src/middle-wares/auth');
 const UserMiddleware = require(appRoot + '/src/middle-wares/validation/user');
 
 router.get(
+    '/all-users',
+    [jwtValidations, userValidations.validateGetAllUsers],
+    userController.getAllUsers
+);
+
+router.get(
     '/:id',
     [jwtValidations, UserMiddleware.validateUser, userValidations.validateGetUserById],
     userController.getUserById
+);
+
+router.post(
+    '/',
+    [jwtValidations, userValidations.validateCreateUser],
+    userController.createUser
 );
 
 router.patch(
@@ -18,5 +30,10 @@ router.patch(
     userController.updateUserByUserId
 );
 
+router.delete(
+    '/:id',
+    [jwtValidations, UserMiddleware.validateUser, userValidations.validateDeleteUserById],
+    userController.deleteUserById
+);
 
 module.exports = router;

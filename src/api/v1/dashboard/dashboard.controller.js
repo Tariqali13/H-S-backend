@@ -1,6 +1,6 @@
 const appRoot = require('app-root-path');
-const Gallery = require(appRoot + '/src/models/gallery');
-const Subscribtions = require(appRoot + '/src/models/subscribtion');
+const Video = require(appRoot + '/src/models/video');
+const User = require(appRoot + '/src/models/user');
 const Bookings = require(appRoot + '/src/models/booking');
 const appConstants = require(appRoot + '/src/constants/app-constants');
 const {status, messages} = appConstants;
@@ -19,8 +19,8 @@ class DashboardController {
                 createdAt: {$gte: startOfDate, $lte: endOfDate}
             };
             const totalBookings = await Bookings.countDocuments(query);
-            const totalImages = await Gallery.countDocuments({ ...query, is_deleted: false });
-            const totalSubscribtions = await Subscribtions.countDocuments(query);
+            const totalVideos = await Video.countDocuments({ ...query, is_deleted: false });
+            const totalEmployees = await User.countDocuments(query);
             let bookingArray = [];
             const startYear = moment(new Date()).startOf('year')
             const endYear = moment(new Date()).endOf('year')
@@ -39,8 +39,8 @@ class DashboardController {
             bookingArray = await Promise.all(getBookings);
             const dataToReturn = {
                 totalBookings,
-                totalImages,
-                totalSubscribtions,
+                totalVideos,
+                totalEmployees,
                 bookingArray,
             }
             return res.status(status.success).json({

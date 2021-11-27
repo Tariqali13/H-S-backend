@@ -31,6 +31,14 @@ const userSchema = new Schema({
     is_active: {
         type: Boolean,
         default: true,
+    },
+    created_by: {
+        type: Schema.Types.ObjectId,
+        ref: schemaReferences.users,
+    },
+    updated_by: {
+        type: Schema.Types.ObjectId,
+        ref: schemaReferences.users,
     }
 });
 
