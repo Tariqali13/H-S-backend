@@ -1,6 +1,7 @@
 const appRoot = require('app-root-path');
 const Video = require(appRoot + '/src/models/video');
 const appConstants = require(appRoot + '/src/constants/app-constants');
+const StorageFile = require(appRoot + '/src/models/storage-file');
 const { status, messages } = appConstants;
 const VideoUtil = require('./util');
 
@@ -33,7 +34,7 @@ exports.getAllVideo = async (req, res) => {
             data: videos,
             page_no: page_no,
             records_per_page: records_per_page,
-            total_number_of_video: totalNumberOfVideos,
+            total_number_of_videos: totalNumberOfVideos,
         });
     } catch (err) {
         console.log(err);
@@ -119,6 +120,8 @@ exports.updateVideoById = async (req, res) => {
 exports.deleteVideoById = async (req, res) => {
     try {
         const { id } = req.params;
+        const findVideo = Video.findById(id);
+        await StorageFile.findByIdAndUpdate({ _id: findVideo.video_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
         await Video.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'Video deleted Successfully.',
