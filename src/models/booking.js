@@ -28,14 +28,10 @@ const bookingSchema = new Schema({
         type: String,
         default: null
     },
-    event_date: {
-        type: Date,
-        default: null
+    product_id: {
+        type: Schema.Types.ObjectId,
+        ref: schemaReferences.products,
     },
-    // pricing_plan: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: schemaReferences.pricing_plans,
-    // },
     created_by: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.users,

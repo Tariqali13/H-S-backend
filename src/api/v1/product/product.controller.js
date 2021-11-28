@@ -77,13 +77,14 @@ exports.updateProductById = async (req, res) => {
 exports.deleteProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const findProduct = Product.findById(id);
+        const findProduct = await Product.findById(id);
         await StorageFile.findByIdAndUpdate({ _id: findProduct.image_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
         await Product.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'Product deleted Successfully.',
         });
     } catch (err) {
+        console.log(err);
         return res.status(status.serverError).json({
             message: messages.serverErrorMessage
         });

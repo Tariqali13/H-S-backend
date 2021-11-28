@@ -17,18 +17,10 @@ module.exports = {
                     email: {$regex: params.email.trim(), $options: 'i'},
                 };
             }
-            if (params.pricing_plan) {
+            if (params.product_id) {
                 query = {
                     ...query,
-                    pricing_plan: params.pricing_plan,
-                };
-            }
-            if (params.event_date) {
-                const startOfDate = moment(params.event_date).startOf('day').toString()
-                const endOfDate = moment(params.event_date).endOf('day').toString()
-                query = {
-                    ...query,
-                    event_date: {$gte: startOfDate, $lte: endOfDate}
+                    product_id: params.product_id,
                 };
             }
             if (params.city || params.state || params.address) {

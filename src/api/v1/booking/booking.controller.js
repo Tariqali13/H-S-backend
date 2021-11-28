@@ -8,7 +8,7 @@ const bookingUtil = require('./util');
 exports.getBookingById = async (req, res) => {
     try {
         const { id } = req.params;
-        const booking = await Booking.findById(id).populate('pricing_plan');
+        const booking = await Booking.findById(id).populate('product_id');
         return res.status(status.success).json({
             message: 'Booking found Successfully.',
             data: booking,
@@ -27,7 +27,7 @@ exports.getAllBookings = async (req, res) => {
         const skipPage = parseInt(page_no) - 1;
         const limitPage = parseInt(records_per_page);
         const skipDocuments = skipPage * limitPage;
-        const bookings = await Booking.find(query).populate('pricing_plan').populate('created_by').limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
+        const bookings = await Booking.find(query).populate('product_id').populate('created_by').limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
         const totalNumberOfBookings = await Booking.countDocuments(query)
         return res.status(status.success).json({
             message: 'Bookings found Successfully.',

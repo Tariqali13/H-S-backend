@@ -27,8 +27,7 @@ const validateGetAllBookings = async (req, res, next) => {
             state: Joi.string().optional().allow(''),
             city: Joi.string().optional().allow(''),
             address: Joi.string().optional().allow(''),
-            event_date: Joi.date().optional(),
-            pricing_plan: Joi.string().optional().allow(''),
+            product_id: Joi.string().optional().allow(''),
          })
         await schema.validateAsync(req.body);
         next();
@@ -47,8 +46,7 @@ const validateCreateBooking = async (req, res, next) => {
             city: Joi.string().required(),
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
-            event_date: Joi.date().required(),
-            pricing_plan: Joi.string().required(),
+            product_id: Joi.string().required(),
             created_by: Joi.string().optional().allow(''),
         })
         await schema.validateAsync(req.body);
@@ -71,8 +69,7 @@ const validateUpdateBooking = async (req, res, next) => {
             city: Joi.string().required(),
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
-            event_date: Joi.date().required(),
-            pricing_plan: Joi.string().required(),
+            product_id: Joi.string().required(),
             updated_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
