@@ -10,6 +10,7 @@ const testimonial = require('./testimonial');
 const video = require('./video');
 const employeeProgress = require('./employee-progress');
 const dashboardStats = require('./dashboard');
+const product = require('./product');
 
 router.use('/auth', auth);
 router.use('/user', user);
@@ -21,5 +22,6 @@ router.use('/subscribed', subscribed);
 router.use('/testimonial', testimonial);
 router.use('/video', video);
 router.use('/employee-progress', employeeProgress);
+router.use('/product', product);
 
 module.exports = router;
