@@ -15,10 +15,6 @@ const videoSchema = new Schema({
         type: String,
         default: null
     },
-    upload_date: {
-        type: Date,
-        default: null
-    },
     created_by: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.users,

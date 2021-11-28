@@ -7,6 +7,10 @@ const employeeProgressSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: schemaReferences.storageFiles,
     }],
+    employee_id: {
+        type: Schema.Types.ObjectId,
+        ref: schemaReferences.users,
+    },
     created_by: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.users,
