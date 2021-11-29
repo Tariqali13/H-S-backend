@@ -4,7 +4,8 @@ const StorageFile = require(appRoot + '/src/models/storage-file');
 const _get = require('lodash.get');
 const appConstants = require(appRoot + '/src/constants/app-constants');
 const UserUtil = require('./util');
-
+const authUtil = require(appRoot + '/src/utils/auth-util');
+const auth = authUtil.auth();
 const { status, messages } = appConstants;
 
 
