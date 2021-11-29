@@ -62,6 +62,7 @@ const validateUpdateUser = async (req, res, next) => {
             first_name: Joi.string().max(255).required(),
             last_name: Joi.string().max(255).required(),
             email: Joi.string().required(),
+            new_password: Joi.string().optional(),
             image_id: Joi.string().optional(),
             is_active: Joi.boolean().optional(),
             updated_by: Joi.string().optional(),

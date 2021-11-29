@@ -67,6 +67,10 @@ exports.createUser = async (req, res) => {
 exports.updateUserByUserId = async (req, res) => {
     try {
         const user_id = _get(req, 'params.id')
+        const { new_password } = req.body;
+        if (new_password) {
+            req.body.password = await auth.generateHash(new_password);
+        }
         const user = await User.findByIdAndUpdate({ _id: user_id }, req.body, {new: true});
         return res.status(status.success).json({
             message: 'User Updated Successfully.',
