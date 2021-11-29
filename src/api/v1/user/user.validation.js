@@ -64,6 +64,7 @@ const validateUpdateUser = async (req, res, next) => {
             email: Joi.string().required(),
             image_id: Joi.string().optional(),
             is_active: Joi.boolean().optional(),
+            updated_by: Joi.string().optional(),
         })
         await schema.validateAsync(req.body);
         next();
