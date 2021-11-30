@@ -20,13 +20,13 @@ router.get(
 
 router.post(
     '/',
-    [jwtValidations, userValidations.validateCreateUser],
+    [jwtValidations, userValidations.validateCreateUser, UserMiddleware.validateUserWithEmail],
     userController.createUser
 );
 
 router.patch(
     '/:id',
-    [jwtValidations,  UserMiddleware.validateUser, userValidations.validateUpdateUser],
+    [jwtValidations,  UserMiddleware.validateUser, UserMiddleware.validateUserWithEmail, userValidations.validateUpdateUser],
     userController.updateUserByUserId
 );
 

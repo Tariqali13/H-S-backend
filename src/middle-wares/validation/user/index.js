@@ -34,3 +34,30 @@ exports.validateUser = async (req, res, next) => {
         });
     }
 }
+
+
+// In this method we will validate user with email
+exports.validateUserWithEmail = async (req, res, next) => {
+    try {
+        let email;
+        if (_get(req, 'body.email')) {
+            email = _get(req, 'body.email')
+        }
+        if (email) {
+            const userToFind = await User.findOne({email:
+                    { $regex: new RegExp("^" + email.toLowerCase(), "i") }
+            });
+            if (userToFind) {
+                return res.status(status.duplicateRecord).json({
+                    message: 'This email already in use. Please check and try again'
+                });
+            }
+        }
+        next();
+    } catch (error) {
+        return res.status(status.serverError).json({
+            message: messages.serverErrorMessage,
+            error
+        });
+    }
+}
