@@ -43,7 +43,7 @@ const validateCreateUser = async (req, res, next) => {
             first_name: Joi.string().required(),
             last_name: Joi.string().required(),
             email: Joi.string().required(),
-            image_id: Joi.string().required(),
+            image_id: Joi.string().optional().allow(""),
             password: Joi.string().required(),
             state: Joi.string().required(),
             city: Joi.string().required(),
@@ -74,7 +74,7 @@ const validateUpdateUser = async (req, res, next) => {
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
             position: Joi.string().required(),
-            image_id: Joi.string().optional(),
+            image_id: Joi.string().optional().allow(""),
             is_active: Joi.boolean().optional(),
             updated_by: Joi.string().optional(),
         })

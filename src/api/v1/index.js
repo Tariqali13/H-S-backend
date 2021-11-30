@@ -11,6 +11,7 @@ const video = require('./video');
 const employeeProgress = require('./employee-progress');
 const dashboardStats = require('./dashboard');
 const product = require('./product');
+const consultation = require('./consultation');
 
 router.use('/auth', auth);
 router.use('/user', user);
@@ -23,5 +24,6 @@ router.use('/testimonial', testimonial);
 router.use('/video', video);
 router.use('/employee-progress', employeeProgress);
 router.use('/product', product);
+router.use('/consultation', consultation);
 
 module.exports = router;
