@@ -47,7 +47,7 @@ exports.validateUserWithEmail = async (req, res, next) => {
             const userToFind = await User.findOne({email:
                     { $regex: new RegExp("^" + email.toLowerCase(), "i") }
             });
-            if (userToFind) {
+            if (userToFind && !userToFind?.is_admin) {
                 return res.status(status.duplicateRecord).json({
                     message: 'This email already in use. Please check and try again'
                 });
