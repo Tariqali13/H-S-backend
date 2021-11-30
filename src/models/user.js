@@ -24,6 +24,26 @@ const userSchema = new Schema({
         type: String,
         default: null
     },
+    address: {
+        type: String,
+        default: null
+    },
+    state: {
+        type: String,
+        default: null
+    },
+    city: {
+        type: String,
+        default: null
+    },
+    phone_number: {
+        type: String,
+        default: null
+    },
+    position: {
+        type: String,
+        default: null
+    },
     is_admin: {
         type: Boolean,
         default: false,

@@ -7,5 +7,6 @@ module.exports={
     employee_progress: 'employee_progress',
     testimonials: 'testimonials',
     contacts: 'contacts',
+    consultations: 'consultations',
     subscriptions: 'subscriptions',
 };

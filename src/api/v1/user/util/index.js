@@ -35,6 +35,12 @@ module.exports = {
                     is_active: params.is_active,
                 };
             }
+            if (params.position) {
+                query = {
+                    ...query,
+                    position: params.position,
+                };
+            }
             return query;
         } catch (error) {
             console.log(error);

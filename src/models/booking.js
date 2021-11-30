@@ -28,6 +28,14 @@ const bookingSchema = new Schema({
         type: String,
         default: null
     },
+    bill_range: {
+        type: String,
+        default: null
+    },
+    credit_score: {
+        type: Boolean,
+        default: false,
+    },
     product_id: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.products,

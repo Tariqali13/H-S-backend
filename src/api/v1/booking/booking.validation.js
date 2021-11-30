@@ -46,7 +46,9 @@ const validateCreateBooking = async (req, res, next) => {
             city: Joi.string().required(),
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
-            product_id: Joi.string().required(),
+            product_id: Joi.string().optional().allow(''),
+            bill_range: Joi.string().required(),
+            credit_score: Joi.boolean().required(),
             created_by: Joi.string().optional().allow(''),
         })
         await schema.validateAsync(req.body);
@@ -69,7 +71,9 @@ const validateUpdateBooking = async (req, res, next) => {
             city: Joi.string().required(),
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
-            product_id: Joi.string().required(),
+            bill_range: Joi.string().required(),
+            credit_score: Joi.boolean().required(),
+            product_id: Joi.string().optional().allow(''),
             updated_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
