@@ -1,5 +1,6 @@
 const appRoot = require('app-root-path');
 const StorageFile = require(appRoot + '/src/models/storage-file');
+const EmployeeProgress = require(appRoot + '/src/models/employee-progress');
 const appConstants = require(appRoot + '/src/constants/app-constants');
 const { status, messages } = appConstants;
 
@@ -49,6 +50,10 @@ exports.createStorageFileMultiple = async (req, res) => {
 exports.updateStorageFileById = async (req, res) => {
 	try {
 		const storageFiles = await StorageFile.findByIdAndUpdate({ _id: req.params.id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+		const updateDataProgress = {
+			$pull: { video_ids: req.params.id }
+		}
+		await EmployeeProgress.updateMany({}, updateDataProgress);
 		return res.status(status.success).json({
 			message: 'Storage Files has been updated successfully.',
 			data: storageFiles,

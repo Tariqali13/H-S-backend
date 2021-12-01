@@ -1,5 +1,6 @@
 const appRoot = require('app-root-path');
 const Video = require(appRoot + '/src/models/video');
+const EmployeeProgress = require(appRoot + '/src/models/employee-progress');
 const User = require(appRoot + '/src/models/user');
 const Bookings = require(appRoot + '/src/models/booking');
 const appConstants = require(appRoot + '/src/constants/app-constants');
@@ -21,6 +22,7 @@ class DashboardController {
             const totalBookings = await Bookings.countDocuments(query);
             const totalVideos = await Video.countDocuments({ ...query, is_deleted: false });
             const totalEmployees = await User.countDocuments(query);
+            const employeeProgress = await EmployeeProgress.findOne({ employee_id: user_id })
             let bookingArray = [];
             const startYear = moment(new Date()).startOf('year')
             const endYear = moment(new Date()).endOf('year')
@@ -42,6 +44,7 @@ class DashboardController {
                 totalVideos,
                 totalEmployees,
                 bookingArray,
+                employeeProgress,
             }
             return res.status(status.success).json({
                 message: 'Stats found Successfully.',

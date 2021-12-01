@@ -4,12 +4,12 @@ const appConstants = require(appRoot + '/src/constants/app-constants');
 const { status, messages } = appConstants;
 
 
-const validateGetEmployeeProgress = async (req, res, next) => {
+const validateGetEmployeeProgressById = async (req, res, next) => {
     try {
         const schema = Joi.object().keys({
-            employee_id: Joi.string().required(),
+            id: Joi.string().required(),
         })
-        await schema.validateAsync(req.body);
+        await schema.validateAsync(req.params);
         next();
     } catch (error) {
         return res.status(status.validationError).json({message: error["details"][0]["message"]})
@@ -32,6 +32,6 @@ const validateCreateProgress = async (req, res, next) => {
 };
 
 module.exports = {
-    validateGetEmployeeProgress,
+    validateGetEmployeeProgressById,
     validateCreateProgress,
 }

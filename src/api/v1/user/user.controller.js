@@ -1,6 +1,8 @@
 const appRoot = require('app-root-path');
 const User = require(appRoot + '/src/models/user');
 const StorageFile = require(appRoot + '/src/models/storage-file');
+const EmployeeProgress = require(appRoot + '/src/models/employee-progress');
+const Video = require(appRoot + '/src/models/video');
 const _get = require('lodash.get');
 const appConstants = require(appRoot + '/src/constants/app-constants');
 const UserUtil = require('./util');
@@ -16,7 +18,12 @@ exports.getAllUsers = async (req, res) => {
         const skipPage = parseInt(page_no) - 1;
         const limitPage = parseInt(records_per_page);
         const skipDocuments = skipPage * limitPage;
+        const totalVideos = await Video.countDocuments({ is_deleted: false });
         const users = await User.find(query).populate('created_by').populate("image_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
+        for (const user of users) {
+            const employeeProgress = await EmployeeProgress.findOne({ employee_id: user._id });
+            user.employee_progress = (employeeProgress.video_ids.length / totalVideos) * 100;
+        }
         const totalNumberOfUsers = await User.countDocuments(query)
         return res.status(status.success).json({
             message: 'Users found Successfully.',
@@ -91,6 +98,7 @@ exports.deleteUserById = async (req, res) => {
         if (user?.image_id) {
             await StorageFile.findByIdAndUpdate({ _id: user.image_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
         }
+        await EmployeeProgress.deleteOne({ employee_id: user._id })
         await user.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'User deleted Successfully.',

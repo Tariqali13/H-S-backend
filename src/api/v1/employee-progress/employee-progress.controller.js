@@ -6,11 +6,11 @@ const appConstants = require(appRoot + '/src/constants/app-constants');
 const { status, messages } = appConstants;
 
 
-exports.getEmployeeProgress = async (req, res) => {
+exports.getEmployeeProgressById = async (req, res) => {
     try {
-        const employeeProgress = await EmployeeProgress.find(req.query);
+        const employeeProgress = await EmployeeProgress.findOne({ employee_id: req.params.id});
         return res.status(status.success).json({
-            message: 'Progress found Successfully.',
+            message: 'Employee Progress found Successfully.',
             data: employeeProgress,
         });
     } catch (err) {
@@ -25,25 +25,37 @@ exports.getEmployeeProgress = async (req, res) => {
 exports.createProgress = async (req, res) => {
     try {
         const { employee_id, video_id, created_by } = req.body;
-        let progressExist = EmployeeProgress.find({ employee_id: employee_id });
+        const progressExist = await EmployeeProgress.findOne({ employee_id: employee_id });
         if (progressExist) {
-            const dataToUpdate = {
-                $push: {video_ids: video_id },
-                updated_by: created_by,
+            if (!progressExist.video_ids.includes(video_id)) {
+                const dataToUpdate = {
+                    $push: { video_ids: video_id },
+                    updated_by: created_by,
+                }
+                const updatedProgress = await EmployeeProgress.findByIdAndUpdate({ _id: progressExist._id }, dataToUpdate, { new: true });
+                return res.status(status.success).json({
+                    message: 'Progress Created Successfully.',
+                    data: updatedProgress,
+                });
+            } else {
+                return res.status(status.success).json({
+                    message: 'Already watched video',
+                });
             }
-            const updatedProgress = EmployeeProgress.findOneAndUpdate({ employee_id: employee_id }, dataToUpdate, { new: true });
-            return res.status(status.success).json({
-                message: 'Progress Created Successfully.',
-                data: updatedProgress,
-            });
         } else {
-            const employeeProgress = await EmployeeProgress.create(req.body);
+            const dataToCreate = {
+                employee_id: employee_id,
+                created_by: created_by,
+                video_ids:  [video_id],
+            }
+            const employeeProgress = await EmployeeProgress.create(dataToCreate);
             return res.status(status.success).json({
                 message: 'Progress Created Successfully.',
                 data: employeeProgress,
             });
         }
     } catch (err) {
+        console.log(err);
         return res.status(status.serverError).json({
             message: messages.serverErrorMessage
         });

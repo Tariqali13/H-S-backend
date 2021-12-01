@@ -52,6 +52,9 @@ const userSchema = new Schema({
         type: Boolean,
         default: true,
     },
+    employee_progress: {
+       type: String,
+    },
     created_by: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.users,

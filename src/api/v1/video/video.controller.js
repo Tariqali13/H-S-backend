@@ -1,5 +1,6 @@
 const appRoot = require('app-root-path');
 const Video = require(appRoot + '/src/models/video');
+const EmployeeProgress = require(appRoot + '/src/models/employee-progress');
 const appConstants = require(appRoot + '/src/constants/app-constants');
 const StorageFile = require(appRoot + '/src/models/storage-file');
 const { status, messages } = appConstants;
@@ -120,13 +121,18 @@ exports.updateVideoById = async (req, res) => {
 exports.deleteVideoById = async (req, res) => {
     try {
         const { id } = req.params;
-        const findVideo = Video.findById(id);
+        const findVideo = await Video.findById(id);
         await StorageFile.findByIdAndUpdate({ _id: findVideo.video_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+        const updateDataProgress = {
+            $pull: { video_ids: findVideo.video_id }
+        }
+        await EmployeeProgress.updateMany({}, updateDataProgress);
         await Video.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'Video deleted Successfully.',
         });
     } catch (err) {
+        console.log("err", err)
         return res.status(status.serverError).json({
             message: messages.serverErrorMessage
         });

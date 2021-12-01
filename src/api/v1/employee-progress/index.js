@@ -6,9 +6,9 @@ const employeeProgressController = require('./employee-progress.controller');
 const jwtValidations = require(appRoot + '/src/middle-wares/auth');
 
 router.get(
-    '/',
-    [jwtValidations, employeeProgressValidations.validateGetEmployeeProgress],
-    employeeProgressController.getEmployeeProgress
+    '/:id',
+    [jwtValidations, employeeProgressValidations.validateGetEmployeeProgressById],
+    employeeProgressController.getEmployeeProgressById
 );
 
 router.post(
