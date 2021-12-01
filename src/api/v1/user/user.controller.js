@@ -44,6 +44,11 @@ exports.getUserById = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id).populate('image_id');
+        if (!user.is_active) {
+            return res.status(status.unauthorized).json({
+                message: 'Your account is blocked. Please contact Admin'
+            });
+        }
         return res.status(status.success).json({
             message: 'User found Successfully.',
             data: user,
