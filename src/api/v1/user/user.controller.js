@@ -88,7 +88,9 @@ exports.deleteUserById = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
-        await StorageFile.findByIdAndUpdate({ _id: user.image_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+        if (user?.image_id) {
+            await StorageFile.findByIdAndUpdate({ _id: user.image_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+        }
         await user.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'User deleted Successfully.',
