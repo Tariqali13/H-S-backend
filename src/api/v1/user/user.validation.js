@@ -73,7 +73,7 @@ const validateUpdateUser = async (req, res, next) => {
             city: Joi.string().required(),
             address: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
-            position: Joi.string().required(),
+            position: Joi.string().optional().allow(''),
             image_id: Joi.string().optional().allow(""),
             is_active: Joi.boolean().optional(),
             updated_by: Joi.string().optional(),
