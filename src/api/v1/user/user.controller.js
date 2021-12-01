@@ -22,7 +22,7 @@ exports.getAllUsers = async (req, res) => {
         const users = await User.find(query).populate('created_by').populate("image_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
         for (const user of users) {
             const employeeProgress = await EmployeeProgress.findOne({ employee_id: user._id });
-            user.employee_progress = (employeeProgress.video_ids.length / totalVideos) * 100;
+            user.employee_progress = (_get(employeeProgress, 'video_ids', []).length / totalVideos) * 100;
         }
         const totalNumberOfUsers = await User.countDocuments(query)
         return res.status(status.success).json({
