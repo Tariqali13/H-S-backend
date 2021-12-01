@@ -8,7 +8,13 @@ const { status, messages } = appConstants;
 
 exports.getEmployeeProgressById = async (req, res) => {
     try {
-        const employeeProgress = await EmployeeProgress.findOne({ employee_id: req.params.id});
+        const { is_populate } = req.query;
+        let employeeProgress;
+        if (is_populate) {
+            employeeProgress = await EmployeeProgress.findOne({ employee_id: req.params.id}).populate("video_ids");
+        } else {
+             employeeProgress = await EmployeeProgress.findOne({ employee_id: req.params.id});
+        }
         return res.status(status.success).json({
             message: 'Employee Progress found Successfully.',
             data: employeeProgress,

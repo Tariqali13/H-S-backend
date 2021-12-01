@@ -49,6 +49,9 @@ exports.getUserById = async (req, res) => {
                 message: 'Your account is blocked. Please contact Admin'
             });
         }
+        const totalVideos = await Video.countDocuments({});
+        const employeeProgress = await EmployeeProgress.findOne({ employee_id: user._id });
+        user.employee_progress = (_get(employeeProgress, 'video_ids', []).length / totalVideos) * 100;
         return res.status(status.success).json({
             message: 'User found Successfully.',
             data: user,
