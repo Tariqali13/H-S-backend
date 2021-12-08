@@ -9,4 +9,5 @@ module.exports={
     contacts: 'contacts',
     consultations: 'consultations',
     subscriptions: 'subscriptions',
+    abouts: 'abouts',
 };
