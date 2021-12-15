@@ -49,6 +49,7 @@ const validateCreateBooking = async (req, res, next) => {
             product_id: Joi.string().optional().allow(''),
             bill_range: Joi.string().required(),
             credit_score: Joi.boolean().required(),
+            booking_type: Joi.boolean().required(),
             created_by: Joi.string().optional().allow(''),
         })
         await schema.validateAsync(req.body);
@@ -73,6 +74,7 @@ const validateUpdateBooking = async (req, res, next) => {
             phone_number: Joi.string().optional().allow(""),
             bill_range: Joi.string().required(),
             credit_score: Joi.boolean().required(),
+            booking_type: Joi.boolean().required(),
             product_id: Joi.string().optional().allow(''),
             updated_by: Joi.string().required(),
         })

@@ -31,6 +31,18 @@ const consultationSchema = new Schema({
         type: String,
         default: null,
     },
+    bill_range: {
+        type: String,
+        default: null
+    },
+    credit_score: {
+        type: Boolean,
+        default: false,
+    },
+    booking_type: {
+        type: String,
+        default: null
+    }
 });
 
 consultationSchema.set('timestamps', true);

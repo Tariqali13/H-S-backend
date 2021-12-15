@@ -36,6 +36,10 @@ const bookingSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    booking_type: {
+        type: String,
+        default: null
+    },
     product_id: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.products,
