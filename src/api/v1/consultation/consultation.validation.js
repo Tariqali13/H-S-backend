@@ -49,7 +49,7 @@ const validateCreateConsultation = async (req, res, next) => {
             address: Joi.string().required(),
             bill_range: Joi.string().required(),
             credit_score: Joi.boolean().required(),
-            booking_type: Joi.boolean().required(),
+            booking_type: Joi.string().required(),
             phone_number: Joi.string().optional().allow(""),
         })
         await schema.validateAsync(req.body);
