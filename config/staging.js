@@ -32,7 +32,7 @@ module.exports = {
   expressSessionSecret: fromEnv('EXPRESS_SESSION_SECRET', 'AJSDFAS09DFUAS09DF8A0S9DF'),
   emailLinkExpireTime:  fromEnv('EMAIL_LINK_EXPIRE_TIME', '6'),
   uppyServer: {
-    serverHost: fromEnv('UPPY_SERVER_HOST', 'h--s-backend.herokuapp.com'),
+    serverHost: fromEnv('UPPY_SERVER_HOST', 'hand-and-electric-backend.herokuapp.com'),
     serverProtocol: fromEnv('UPPY_SERVER_PROTOCOL', 'https'),
   },
   sendGrid: {
