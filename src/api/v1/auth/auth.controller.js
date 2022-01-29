@@ -11,14 +11,14 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({email: new RegExp("^" + email + "$", "i")});
-        if (!user.is_active) {
-            return res.status(status.unauthorized).json({
-                message: 'Your account is blocked. Please contact Admin'
-            });
-        }
         if (!user) {
             return res.status(status.notFound).json({
                 message: 'No User Found'
+            });
+        }
+        if (!user.is_active) {
+            return res.status(status.unauthorized).json({
+                message: 'Your account is blocked. Please contact Admin'
             });
         }
         const matchPassword = await bcrypt.compare(password, _get(user, 'password'));
