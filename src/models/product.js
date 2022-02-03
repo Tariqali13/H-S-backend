@@ -15,6 +15,11 @@ const productSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: schemaReferences.storageFiles,
     },
+    type: {
+        type: String,
+        enum: ['service', 'recent_work'],
+        default: 'service'
+    },
     created_by: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.users,

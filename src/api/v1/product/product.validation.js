@@ -23,6 +23,7 @@ const validateGetAllProduct = async (req, res, next) => {
             page_no: Joi.number().optional(),
             records_per_page: Joi.number().optional(),
             title: Joi.string().optional().allow(''),
+            type: Joi.string().optional().allow(''),
          })
         await schema.validateAsync(req.body);
         next();
@@ -38,6 +39,7 @@ const validateCreateProduct = async (req, res, next) => {
             title: Joi.string().required(),
             description: Joi.string().optional(),
             image_id: Joi.string().required(),
+            type: Joi.string().required(),
             created_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);

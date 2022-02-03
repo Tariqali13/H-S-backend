@@ -22,7 +22,7 @@ exports.getProductById = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const { records_per_page = 0, page_no = 1} = req.query;
+        const { records_per_page = 0, page_no = 1, type = 'service'} = req.query;
         const query = await ProductUtil.buildQuery(req.query)
         const skipPage = parseInt(page_no) - 1;
         const limitPage = parseInt(records_per_page);
