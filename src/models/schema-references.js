@@ -10,4 +10,5 @@ module.exports={
     consultations: 'consultations',
     subscriptions: 'subscriptions',
     abouts: 'abouts',
+    folders: 'folders'
 };

@@ -8,6 +8,7 @@ const contact = require('./contact');
 const subscribed = require('./subscribed');
 const testimonial = require('./testimonial');
 const video = require('./video');
+const folder = require('./folder');
 const employeeProgress = require('./employee-progress');
 const dashboardStats = require('./dashboard');
 const product = require('./product');
@@ -26,6 +27,7 @@ router.use('/video', video);
 router.use('/employee-progress', employeeProgress);
 router.use('/product', product);
 router.use('/consultation', consultation);
-router.use('/about', about)
+router.use('/about', about);
+router.use('/folder', folder);
 
 module.exports = router;

@@ -2,18 +2,10 @@ const mongoose = require('mongoose');
 const schemaReferences = require('./schema-references');
 const Schema = mongoose.Schema;
 
-const videoSchema = new Schema({
-    video_id: {
-        type: Schema.Types.ObjectId,
-        ref: schemaReferences.storageFiles,
-    },
+const folderSchema = new Schema({
     image_id: {
         type: Schema.Types.ObjectId,
         ref: schemaReferences.storageFiles,
-    },
-    folder_id: {
-        type: Schema.Types.ObjectId,
-        ref: schemaReferences.folders,
     },
     title: {
         type: String,
@@ -22,6 +14,9 @@ const videoSchema = new Schema({
     description: {
         type: String,
         default: null
+    },
+    total_videos: {
+        type: Number,
     },
     created_by: {
         type: Schema.Types.ObjectId,
@@ -33,6 +28,6 @@ const videoSchema = new Schema({
     }
 });
 
-videoSchema.set('timestamps', true);
+folderSchema.set('timestamps', true);
 
-module.exports = mongoose.model(schemaReferences.videos, videoSchema);
+module.exports = mongoose.model(schemaReferences.folders, folderSchema);

@@ -11,12 +11,6 @@ module.exports = {
                     title: {$regex: params.title.trim(), $options: 'i'},
                 };
             }
-            if (params.folder_id) {
-                query = {
-                    ...query,
-                    folder_id: params.folder_id,
-                }
-            }
             return query;
         } catch (error) {
             console.log(error);

@@ -9,7 +9,7 @@ const VideoUtil = require('./util');
 exports.getVideoById = async (req, res) => {
     try {
         const { id } = req.params;
-        const video = await Video.findById(id).populate('created_by').populate("video_id");
+        const video = await Video.findById(id).populate('created_by').populate('image_id').populate("video_id");
         return res.status(status.success).json({
             message: 'Video found Successfully.',
             data: video,
@@ -28,7 +28,7 @@ exports.getAllVideo = async (req, res) => {
         const skipPage = parseInt(page_no) - 1;
         const limitPage = parseInt(records_per_page);
         const skipDocuments = skipPage * limitPage;
-        const videos = await Video.find(query).populate('created_by').populate("video_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
+        const videos = await Video.find(query).populate('created_by').populate('image_id').populate("video_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
         const totalNumberOfVideos = await Video.countDocuments(query)
         return res.status(status.success).json({
             message: 'Videos found Successfully.',
@@ -78,12 +78,14 @@ exports.createVideo = async (req, res) => {
 
 exports.createVideoMultiple = async (req, res) => {
     try {
-        const { videos_data = [], title, description, created_by } = req.body;
+        const { videos_data = [], title, image_id, folder_id, description, created_by } = req.body;
         const videos = [];
         for (const video of videos_data) {
             const dataToSave = {
                 video_id: video,
                 title: title,
+                image_id: image_id,
+                folder_id: folder_id,
                 description: description,
                 created_by: created_by,
             }
