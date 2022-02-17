@@ -15,6 +15,14 @@ const videoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: schemaReferences.folders,
     },
+    order_by: {
+        type: Number,
+        default: 0,
+    },
+    parent_count: {
+        type: Number,
+        default: 0,
+    },
     title: {
         type: String,
         default: null
@@ -22,6 +30,14 @@ const videoSchema = new Schema({
     description: {
         type: String,
         default: null
+    },
+    total_videos: {
+        type: Number,
+    },
+    type: {
+        enum: ['folder', 'video'],
+        type: String,
+        default: 'video',
     },
     created_by: {
         type: Schema.Types.ObjectId,

@@ -14,6 +14,7 @@ const dashboardStats = require('./dashboard');
 const product = require('./product');
 const consultation = require('./consultation');
 const about = require('./about');
+const reposition = require('./reposition');
 
 router.use('/auth', auth);
 router.use('/user', user);
@@ -29,5 +30,7 @@ router.use('/product', product);
 router.use('/consultation', consultation);
 router.use('/about', about);
 router.use('/folder', folder);
+router.use('/reposition', reposition);
+
 
 module.exports = router;

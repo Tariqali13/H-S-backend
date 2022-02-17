@@ -5,6 +5,8 @@ const appConstants = require(appRoot + '/src/constants/app-constants');
 const StorageFile = require(appRoot + '/src/models/storage-file');
 const { status, messages } = appConstants;
 const VideoUtil = require('./util');
+const commonUtil = require(appRoot + '/src/utils/common-util');
+const orderByUtil = commonUtil.orderBy();
 
 exports.getVideoById = async (req, res) => {
     try {
@@ -23,13 +25,22 @@ exports.getVideoById = async (req, res) => {
 
 exports.getAllVideo = async (req, res) => {
     try {
-        const { records_per_page = 0, page_no = 1} = req.query;
+        const { records_per_page = 0, page_no = 1, type = 'video', is_parent_folder = false} = req.query;
         const query = await VideoUtil.buildQuery(req.query)
         const skipPage = parseInt(page_no) - 1;
         const limitPage = parseInt(records_per_page);
         const skipDocuments = skipPage * limitPage;
-        const videos = await Video.find(query).populate('created_by').populate('image_id').populate("video_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ createdAt: -1 });
+        let videos = await Video.find(query).populate('created_by').populate('image_id').populate("video_id").limit(Number(records_per_page)).skip(skipDocuments).sort({ order_by: 1 });
         const totalNumberOfVideos = await Video.countDocuments(query)
+        if (totalNumberOfVideos > 0) {
+            if (videos.length) {
+                for (const f of videos) {
+                    if (f.type === 'folder') {
+                        f.total_videos = await Video.countDocuments({ folder_id: f._id, type: 'video'});
+                    }
+                }
+            }
+        }
         return res.status(status.success).json({
             message: 'Videos found Successfully.',
             data: videos,
@@ -63,6 +74,18 @@ exports.getVideoCount = async (req, res) => {
 
 exports.createVideo = async (req, res) => {
     try {
+        const { folder_id } = req.body;
+        let query = {};
+        if (folder_id) {
+            query = {
+                folder_id: folder_id,
+            }
+        } else {
+            query = {
+                folder_id: {$exists: false},
+            }
+        }
+        req.body.order_by = await orderByUtil.getOrder(Video, query);
         const video = await Video.create(req.body);
         return res.status(status.success).json({
             message: 'Video Created Successfully.',
@@ -78,15 +101,29 @@ exports.createVideo = async (req, res) => {
 
 exports.createVideoMultiple = async (req, res) => {
     try {
-        const { videos_data = [], title, image_id, folder_id, description, created_by } = req.body;
+        const { videos_data = [], title, type, image_id, parent_count, folder_id, description, created_by } = req.body;
         const videos = [];
+        let query = {};
+        if (folder_id) {
+            query = {
+                folder_id: folder_id,
+            }
+        } else {
+            query = {
+                folder_id: {$exists: false},
+            }
+        }
         for (const video of videos_data) {
+            const orderBy = await orderByUtil.getOrder(Video, query)
             const dataToSave = {
                 video_id: video,
                 title: title,
                 image_id: image_id,
                 folder_id: folder_id,
                 description: description,
+                order_by: orderBy,
+                type: type,
+                parent_count: parent_count,
                 created_by: created_by,
             }
             let newVideo = await Video.create(dataToSave);
@@ -124,11 +161,19 @@ exports.deleteVideoById = async (req, res) => {
     try {
         const { id } = req.params;
         const findVideo = await Video.findById(id);
-        await StorageFile.findByIdAndUpdate({ _id: findVideo.video_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
-        const updateDataProgress = {
-            $pull: { video_ids: findVideo.video_id }
+        if (findVideo.type === 'video') {
+            await StorageFile.findByIdAndUpdate({ _id: findVideo.video_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+            const updateDataProgress = {
+                $pull: { video_ids: findVideo.video_id }
+            }
+            await EmployeeProgress.updateMany({}, updateDataProgress);
+        } else {
+            await StorageFile.findByIdAndUpdate({ _id: findVideo.image_id }, { schedule_to_delete: true, is_deleted: true }, { new: true });
+            // const updateDataProgress = {
+            //     $pull: { video_ids: findVideo.video_id }
+            // }
+            // await EmployeeProgress.updateMany({}, updateDataProgress);
         }
-        await EmployeeProgress.updateMany({}, updateDataProgress);
         await Video.deleteOne({ _id: id });
         return res.status(status.success).json({
             message: 'Video deleted Successfully.',

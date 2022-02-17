@@ -23,7 +23,9 @@ const validateGetAllVideo = async (req, res, next) => {
             page_no: Joi.number().optional(),
             records_per_page: Joi.number().optional(),
             title: Joi.string().optional().allow(''),
-            folder_id:  Joi.string().optional().allow(''),
+            folder_id: Joi.string().optional().allow(''),
+            type: Joi.string().optional().allow(''),
+            is_parent_folder: Joi.boolean().optional(),
          })
         await schema.validateAsync(req.body);
         next();
@@ -38,9 +40,11 @@ const validateCreateVideo = async (req, res, next) => {
         const schema = Joi.object().keys({
             title: Joi.string().required(),
             description: Joi.string().optional(),
-            video_id: Joi.string().required(),
-            folder_id: Joi.string().required(),
+            video_id: Joi.string().optional(),
+            folder_id: Joi.string().optional().allow(''),
             image_id: Joi.string().optional(),
+            type: Joi.string().optional(),
+            parent_count: Joi.number().required(),
             created_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
@@ -53,11 +57,13 @@ const validateCreateVideo = async (req, res, next) => {
 const validateCreateVideoMultiple = async (req, res, next) => {
     try {
         const schema = Joi.object().keys({
-            videos_data: Joi.array().min(1).required(),
+            videos_data: Joi.array().min(1).optional(),
             title: Joi.string().required(),
             description: Joi.string().optional(),
-            folder_id: Joi.string().required(),
+            folder_id: Joi.string().optional().allow(''),
             image_id: Joi.string().optional(),
+            type: Joi.string().optional(),
+            parent_count: Joi.number().required(),
             created_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
@@ -75,10 +81,11 @@ const validateUpdateVideo = async (req, res, next) => {
         const schema = Joi.object().keys({
             id: Joi.string().required(),
             title: Joi.string().required(),
-            video_id: Joi.string().required(),
+            video_id: Joi.string().optional(),
             description: Joi.string().optional(),
-            folder_id: Joi.string().required(),
+            folder_id: Joi.string().optional().allow(''),
             image_id: Joi.string().optional(),
+            type: Joi.string().optional(),
             updated_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
