@@ -57,7 +57,7 @@ const validateCreateVideo = async (req, res, next) => {
 const validateCreateVideoMultiple = async (req, res, next) => {
     try {
         const schema = Joi.object().keys({
-            videos_data: Joi.array().min(1).optional(),
+            videos_data: Joi.array().optional(),
             title: Joi.string().required(),
             description: Joi.string().optional(),
             folder_id: Joi.string().optional().allow(''),

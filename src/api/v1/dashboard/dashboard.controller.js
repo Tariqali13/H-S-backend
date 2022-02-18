@@ -20,7 +20,7 @@ class DashboardController {
                 createdAt: {$gte: startOfDate, $lte: endOfDate}
             };
             const totalBookings = await Bookings.countDocuments(query);
-            const totalVideos = await Video.countDocuments({ is_deleted: false });
+            const totalVideos = await Video.countDocuments({ is_deleted: false, type: 'video' });
             const totalEmployees = await User.countDocuments({});
             const employeeProgress = await EmployeeProgress.findOne({ employee_id: user_id })
             let bookingArray = [];
