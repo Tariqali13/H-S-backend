@@ -37,6 +37,7 @@ exports.getAllVideo = async (req, res) => {
                 for (const f of videos) {
                     if (f.type === 'folder') {
                         f.total_videos = await Video.countDocuments({folder_id: f._id, type: 'video'}) || 0;
+                        f.total_folders = await Video.countDocuments({folder_id: f._id, type: 'folder'}) || 0;
                     }
                 }
             }
@@ -101,7 +102,7 @@ exports.createVideo = async (req, res) => {
 
 exports.createVideoMultiple = async (req, res) => {
     try {
-        const {videos_data = [], title, type, image_id, parent_count, folder_id, description, created_by} = req.body;
+        const {videos_data = [], is_blocked = false, unblock_after, title, type, image_id, parent_count, folder_id, description, created_by} = req.body;
         const videos = [];
         let query = {};
         if (folder_id) {
@@ -125,6 +126,8 @@ exports.createVideoMultiple = async (req, res) => {
                     order_by: orderBy,
                     type: type,
                     parent_count: parent_count,
+                    is_blocked: is_blocked,
+                    unblock_after: unblock_after,
                     created_by: created_by,
                 }
                 let newVideo = await Video.create(dataToSave);
@@ -140,6 +143,8 @@ exports.createVideoMultiple = async (req, res) => {
                 order_by: orderBy,
                 type: type,
                 parent_count: parent_count,
+                is_blocked: is_blocked,
+                unblock_after: unblock_after,
                 created_by: created_by,
             }
             let newVideo = await Video.create(dataToSave);

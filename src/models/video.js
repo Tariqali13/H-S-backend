@@ -13,7 +13,7 @@ const videoSchema = new Schema({
     },
     folder_id: {
         type: Schema.Types.ObjectId,
-        ref: schemaReferences.folders,
+        ref: schemaReferences.videos,
     },
     order_by: {
         type: Number,
@@ -33,6 +33,17 @@ const videoSchema = new Schema({
     },
     total_videos: {
         type: Number,
+    },
+    total_folders: {
+        type: Number,
+    },
+    is_blocked: {
+        type: Boolean,
+        default: false,
+    },
+    unblock_after: {
+        type: Schema.Types.ObjectId,
+        ref: schemaReferences.videos,
     },
     type: {
         enum: ['folder', 'video'],

@@ -45,6 +45,8 @@ const validateCreateVideo = async (req, res, next) => {
             image_id: Joi.string().optional(),
             type: Joi.string().optional(),
             parent_count: Joi.number().required(),
+            is_blocked: Joi.boolean().required(),
+            unblock_after: Joi.string().optional(),
             created_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
@@ -64,6 +66,8 @@ const validateCreateVideoMultiple = async (req, res, next) => {
             image_id: Joi.string().optional(),
             type: Joi.string().optional(),
             parent_count: Joi.number().required(),
+            is_blocked: Joi.boolean().required(),
+            unblock_after: Joi.string().optional(),
             created_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
@@ -86,6 +90,8 @@ const validateUpdateVideo = async (req, res, next) => {
             folder_id: Joi.string().optional().allow(''),
             image_id: Joi.string().optional(),
             type: Joi.string().optional(),
+            is_blocked: Joi.boolean().required(),
+            unblock_after: Joi.string().optional(),
             updated_by: Joi.string().required(),
         })
         await schema.validateAsync(req.body);
