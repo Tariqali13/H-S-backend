@@ -9,6 +9,8 @@ const validateReposition = async (req, res, next) => {
       desired_location: Joi.string().required(),
       direction: Joi.string().required(),
       videoId: Joi.string().required(),
+      other_folder: Joi.boolean().optional(),
+      other_folder_id: Joi.string().optional(),
       folder_id: Joi.string().optional(),
     })
     await schema.validateAsync(req.body);
